@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="StorageApp.Orders.Application/StorageApp.Orders.Application.csproj" />
+  <Project Path="StorageApp.Orders.Domain/StorageApp.Orders.Domain.csproj" />
+  <Project Path="StorageApp.Orders.Infrastructure/StorageApp.Orders.Infrastructure.csproj" />
+  <Project Path="StorageApp.Orders/StorageApp.Orders.csproj" />
+</Solution>
