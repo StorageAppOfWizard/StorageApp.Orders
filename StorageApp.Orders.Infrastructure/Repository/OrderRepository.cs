@@ -45,7 +45,16 @@ namespace StorageApp.Orders.Infrastructure.Repository
                 .Skip((page - 1) * pageQuantity)
                 .Take(pageQuantity)
                 .ToListAsync(cancellationToken);
+            
         }
+
+        public async Task CommitAsync(CancellationToken cancellationToken = default)
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        
+        
     }
 }
 

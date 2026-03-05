@@ -10,5 +10,12 @@
         public string UserName { get; set; }
         public DateTime CreatedAt{ get; set; }
 
+
+
+        public void UpdateStatus(OrderStatus status)
+        {
+            Status = status;
+        }
+
     }
 }
