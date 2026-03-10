@@ -35,13 +35,13 @@ namespace StorageApp.Orders.Application.Mapper
             };
         }
 
-        public static Order ToEntity(this CreateOrderDTO dto, string userId, string userName)
+        public static Order ToEntity(this CreateOrderDTO dto /* string userId, string userName*/)
         {
             return new Order
             {
                 ProductId = dto.ProductId,
-                UserId = userId,
-                UserName = userName,
+                //UserId = userId,
+                //UserName = userName,
                 QuantityProduct = dto.Quantity,
 
             };

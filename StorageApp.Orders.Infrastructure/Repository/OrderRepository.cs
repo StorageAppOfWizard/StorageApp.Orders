@@ -53,8 +53,10 @@ namespace StorageApp.Orders.Infrastructure.Repository
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        
-        
+        public Task<ProductSnap?> GetProductById(Guid id, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

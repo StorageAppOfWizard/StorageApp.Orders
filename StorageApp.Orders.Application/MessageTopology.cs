@@ -1,0 +1,51 @@
+﻿using Microsoft.Extensions.Configuration;
+using RabbitMQ.Client;
+using StorageApp.Orders.Application.Contracts;
+
+namespace StorageApp.Orders.Application
+{
+    public class MessageTopology
+    {
+        private readonly IMessageConnection _connection;
+        private readonly IConfiguration _configuration;
+
+        public MessageTopology(IMessageConnection connection)
+        {
+            _connection = connection;
+        }
+
+        public async Task ConfigureAsync()
+        {
+
+            await using var channel = await _connection.GetConnection().CreateChannelAsync();
+
+            await channel.ExchangeDeclareAsync
+            (
+                exchange: _configuration["RabbitMqEnviroment:ExchangeName"],
+                type: ExchangeType.Direct,
+                durable: true,
+                autoDelete: false,
+                arguments: null
+            );
+
+            await channel.QueueDeclareAsync
+            (
+                queue: _configuration["RabbitMqEnviroment:QueueName"],
+                durable: true,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null
+            );
+
+            await channel.QueueBindAsync
+            (
+                queue: _configuration["RabbitMqEnviroment:QueueName"],
+                exchange: _configuration["RabbitMqEnviroment:ExchangeName"],
+                routingKey: _configuration["RabbitMqEnviroment:RoutingKey"],
+                arguments: null
+            );
+
+           
+        }
+    }
+}

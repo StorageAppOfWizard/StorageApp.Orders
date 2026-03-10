@@ -11,12 +11,14 @@ namespace StorageApp.Orders.Application.Service
     {
         private readonly IEnumerable<IOrderHandler> _orderHandler;
         private readonly IOrderRepository _orderRepository;
+        private readonly CancellationToken _token;
 
 
-        public OrderService(IEnumerable<IOrderHandler> orderHandler, IOrderRepository orderRepository)
+        public OrderService(IEnumerable<IOrderHandler> orderHandler, IOrderRepository orderRepository, CancellationToken cancellationToken)
         {
             _orderHandler = orderHandler;
             _orderRepository = orderRepository;
+            _token =  cancellationToken;
         }
 
         public async Task<Result<PagedItems<OrderDTO>>> GetAllAsync(int page, int pageQuantity)
@@ -53,28 +55,28 @@ namespace StorageApp.Orders.Application.Service
         //    return Result.Success(orders.Select(o => o.ToDTO()).ToList());
         //}
 
-        //public async Task<Result> CreateOrderAsync(CreateOrderDTO dto)
-        //{
+        public async Task<Result> CreateOrderAsync(CreateOrderDTO dto)
+        {
 
-        //    var existingProduct = await _orderRepository.ProductRepository.GetById(dto.ProductId);
-        //    if (existingProduct is null)
-        //        return Result.NotFound("Not Found Product, check if the product exist");
+            var existingProduct = await _orderRepository.GetProductById(dto.ProductId);
+            if (existingProduct is null)
+                return Result.NotFound("Not Found Product, check if the product exist");
 
-        //    if (existingProduct.Quantity < dto.Quantity)
-        //        return Result.Error("There is not sufficient quantity for this order");
+            if (existingProduct.Quantity < dto.Quantity)
+                return Result.Error("There is not sufficient quantity for this order");
 
-        //    var userId = _userContextAuth.UserId;
-        //    var username = _userContextAuth.UserName;
+            //var userId = _userContextAuth.UserId;
+            //var username = _userContextAuth.UserName;
 
-        //    if (userId is null)
-        //        return Result.Unauthorized("Sign in for create a order");
+            //if (userId is null)
+            //    return Result.Unauthorized("Sign in for create a order");
 
-        //    existingProduct.Quantity -= dto.Quantity;
-        //    await _orderRepository.Create(dto.ToEntity(userId, username));
+            existingProduct.Quantity -= dto.Quantity;
+            await _orderRepository.Create(dto.ToEntity(), _token);
 
-        //    await _orderRepository.CommitAsync();
-        //    return Result.SuccessWithMessage("Order Created");
-        //}
+            await _orderRepository.CommitAsync();
+            return Result.SuccessWithMessage("Order Created");
+        }
 
         //public async Task<Result> RejectOrderAsync(Guid orderId)
         //{
