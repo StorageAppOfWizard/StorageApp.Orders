@@ -5,27 +5,29 @@ using StorageApp.Orders.Application.Contracts;
 namespace StorageApp.Orders.Application
 {
 
-    public class MessageConnection(IConnection connection) : IMessageConnection
+    public class MessageConnection : IMessageConnection
     {
-        const string exchangeName = "pedido.criado";
-        const string queueName = "pedidos.criados";
-        const string routingKey = "pedido.criado";
 
-
-        private IConnection _connection = connection;
+        private IConnection _connection;
         private ConnectionFactory _factory;
+
+        public MessageConnection()
+        {
+        }
+
 
         public void ConnectionMessage(IConfiguration configuration)
         {
                 _factory = new ConnectionFactory()
             {
-                HostName = configuration["RabbitMQ:Host"],
+                HostName = configuration["RabbitMQ:HostName"],
                 Port = int.Parse(configuration["RabbitMQ:Port"]),
                 UserName = configuration["RabbitMQ:UserName"],
                 Password = configuration["RabbitMQ:Password"],
                 VirtualHost = configuration["RabbitMQ:VirtualHost"],
                 AutomaticRecoveryEnabled = true,
                 NetworkRecoveryInterval = TimeSpan.FromSeconds(10),
+                    
             };
         }
 

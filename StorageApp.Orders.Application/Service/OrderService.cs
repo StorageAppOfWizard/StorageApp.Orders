@@ -10,15 +10,14 @@ namespace StorageApp.Orders.Application.Service
     public class OrderService : IOrderService
     {
         private readonly IEnumerable<IOrderHandler> _orderHandler;
+        private readonly IMessageProducer _messageProducer;
         private readonly IOrderRepository _orderRepository;
-        private readonly CancellationToken _token;
 
 
-        public OrderService(IEnumerable<IOrderHandler> orderHandler, IOrderRepository orderRepository, CancellationToken cancellationToken)
+        public OrderService(IMessageProducer messageProducer, IOrderRepository orderRepository)
         {
-            _orderHandler = orderHandler;
+            _messageProducer = messageProducer;
             _orderRepository = orderRepository;
-            _token =  cancellationToken;
         }
 
         public async Task<Result<PagedItems<OrderDTO>>> GetAllAsync(int page, int pageQuantity)
@@ -58,23 +57,29 @@ namespace StorageApp.Orders.Application.Service
         public async Task<Result> CreateOrderAsync(CreateOrderDTO dto)
         {
 
-            var existingProduct = await _orderRepository.GetProductById(dto.ProductId);
-            if (existingProduct is null)
-                return Result.NotFound("Not Found Product, check if the product exist");
+            //var existingProduct = await _orderRepository.GetProductById(dto.ProductId);
+            //if (existingProduct is null)
+            //    return Result.NotFound("Not Found Product, check if the product exist");
 
-            if (existingProduct.Quantity < dto.Quantity)
-                return Result.Error("There is not sufficient quantity for this order");
+            //if (existingProduct.Quantity < dto.Quantity)
+            //    return Result.Error("There is not sufficient quantity for this order");
 
             //var userId = _userContextAuth.UserId;
             //var username = _userContextAuth.UserName;
 
+            var userId = "teste";
+            var username = "testeee";
+
             //if (userId is null)
             //    return Result.Unauthorized("Sign in for create a order");
+            int fakequantity = 50;
 
-            existingProduct.Quantity -= dto.Quantity;
-            await _orderRepository.Create(dto.ToEntity(), _token);
+            fakequantity -= dto.Quantity;
+            var body = dto.ToEntity(userId, username);
+            await _orderRepository.Create(body);
 
             await _orderRepository.CommitAsync();
+            await _messageProducer.SendMessage(body);
             return Result.SuccessWithMessage("Order Created");
         }
 

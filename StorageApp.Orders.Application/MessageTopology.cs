@@ -4,20 +4,21 @@ using StorageApp.Orders.Application.Contracts;
 
 namespace StorageApp.Orders.Application
 {
-    public class MessageTopology
+    public class MessageTopology : IMessageTopology
     {
         private readonly IMessageConnection _connection;
         private readonly IConfiguration _configuration;
 
-        public MessageTopology(IMessageConnection connection)
+        public MessageTopology(IMessageConnection connection, IConfiguration configuration)
         {
             _connection = connection;
+            _configuration = configuration;
         }
 
-        public async Task ConfigureAsync()
+        public async Task ConfigureAsync(IChannel channel)
         {
 
-            await using var channel = await _connection.GetConnection().CreateChannelAsync();
+             channel = await _connection.GetConnection().CreateChannelAsync();
 
             await channel.ExchangeDeclareAsync
             (

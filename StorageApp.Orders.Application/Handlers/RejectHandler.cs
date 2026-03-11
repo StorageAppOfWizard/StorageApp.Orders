@@ -1,8 +1,6 @@
 ﻿using Ardalis.Result;
-using StorageProject.Application.Contracts;
-using StorageProject.Application.Extensions;
-using StorageProject.Domain.Entities.Enums;
-using StorageProject.Domain.Entity;
+using StorageApp.Orders.Application.Contracts;
+using StorageApp.Orders.Domain.Entity;
 
 namespace StorageProject.Application.Handlers
 {
@@ -11,13 +9,13 @@ namespace StorageProject.Application.Handlers
     {
         public OrderStatus TargetStatus => OrderStatus.Reject;
 
-        public async Task<Result<Order>> Handle(Order order, Product product)
+        public async Task<Result<Order>> Handle(Order order /*Product? product*/)
         {
 
             if (order.Status != OrderStatus.Pending)
                 return Result.Error("Just pending order can be rejected");
 
-            await order.RestoreProductStock(product);
+            //await order.RestoreProductStock(product);
             order.UpdateStatus(OrderStatus.Reject);
 
             return Result.Success(order);

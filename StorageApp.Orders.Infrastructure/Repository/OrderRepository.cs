@@ -10,8 +10,8 @@ namespace StorageApp.Orders.Infrastructure.Repository
         private readonly DbSet<Order> _dbSet = context.Set<Order>();
 
 
-        public async Task Create(Order order, CancellationToken cancellationToken)
-            => await _dbSet.AddAsync(order, cancellationToken);
+        public async Task Create(Order order)
+            => await _dbSet.AddAsync(order);
         
         public async Task<IEnumerable<Order>> GetAll(Order order, CancellationToken cancellationToken)
             => await _dbSet.AsNoTracking().ToListAsync(cancellationToken);
@@ -22,13 +22,13 @@ namespace StorageApp.Orders.Infrastructure.Repository
         public void Delete(Order order, CancellationToken cancellationToken = default)
             =>_dbSet.Remove(order);
         
-        public async Task<IEnumerable<Order>> GetOrdersByUserId(string userId, CancellationToken cancellationToken = default)
-        {
-            return await _context.Orders
-                .Where(o => o.UserId == userId)
-                .AsNoTracking()
-                .ToListAsync(cancellationToken);
-        }
+        //public async Task<IEnumerable<Order>> GetOrdersByUserId(string userId, CancellationToken cancellationToken = default)
+        //{
+        //    return await _context.Orders
+        //        .Where(o => o.UserId == userId)
+        //        .AsNoTracking()
+        //        .ToListAsync(cancellationToken);
+        //}
 
         public async Task<IEnumerable<Order>> GetOrderWithIncludes(CancellationToken cancellationToken = default)
         {

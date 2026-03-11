@@ -11,8 +11,8 @@ namespace StorageApp.Orders.Infrastructure.Configuration
             builder.HasKey(x => x.Id);
             builder.Property(x => x.QuantityProduct).IsRequired();
             builder.Property(x => x.ProductId).IsRequired();
-            builder.Property(x => x.UserId).IsRequired();
-            builder.Property(x => x.UserName).IsRequired();
+            //builder.Property(x => x.UserId).IsRequired();
+            //builder.Property(x => x.UserName).IsRequired();
             builder.Property(x => x.Status).IsRequired();
         }
     }

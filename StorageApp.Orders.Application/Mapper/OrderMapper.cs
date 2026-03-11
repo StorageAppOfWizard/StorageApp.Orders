@@ -16,8 +16,8 @@ namespace StorageApp.Orders.Application.Mapper
                 ProductId = order.ProductId,
                 Quantity = order.QuantityProduct,
                 Status = order.Status,
-                UserId = order.UserId,
-                UserName = order.UserName,
+                //UserId = order.UserId,
+                //UserName = order.UserName,
                 CreationDate = order.CreatedAt,
 
             };
@@ -28,22 +28,22 @@ namespace StorageApp.Orders.Application.Mapper
             return new Order
             {
                 ProductId = dto.ProductId,
-                UserId = dto.UserId,
-                UserName = dto.UserName,
+                //UserId = dto.UserId,
+                //UserName = dto.UserName,
                 QuantityProduct = dto.Quantity
 
             };
         }
 
-        public static Order ToEntity(this CreateOrderDTO dto /* string userId, string userName*/)
+        public static Order ToEntity(this CreateOrderDTO dto,  string userId, string userName)
         {
             return new Order
             {
+                Id = Guid.NewGuid(),
                 ProductId = dto.ProductId,
-                //UserId = userId,
-                //UserName = userName,
+                UserId = userId,
+                UserName = userName,
                 QuantityProduct = dto.Quantity,
-
             };
         }
 

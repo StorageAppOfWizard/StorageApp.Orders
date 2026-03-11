@@ -8,7 +8,7 @@ namespace StorageApp.Orders.Application.Handlers
     {
         public OrderStatus TargetStatus => OrderStatus.Approved;
 
-        public async Task<Result<Order>> Handle(Order order, Product product)
+        public async Task<Result<Order>> Handle(Order order /*Product? product*/)
         {
             if (order.Status != OrderStatus.Pending)
             {
