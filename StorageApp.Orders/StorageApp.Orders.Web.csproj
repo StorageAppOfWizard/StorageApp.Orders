@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit" Version="9.1.0" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="9.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.4">
       <PrivateAssets>all</PrivateAssets>
@@ -23,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StorageApp.Orders.Application\StorageApp.Orders.Application.csproj" />
+    <ProjectReference Include="..\StorageApp.Orders.Domain\StorageApp.Orders.Domain.csproj" />
     <ProjectReference Include="..\StorageApp.Orders.Infrastructure\StorageApp.Orders.Infrastructure.csproj" />
   </ItemGroup>
 

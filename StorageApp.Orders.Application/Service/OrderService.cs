@@ -10,14 +10,15 @@ namespace StorageApp.Orders.Application.Service
     public class OrderService : IOrderService
     {
         private readonly IEnumerable<IOrderHandler> _orderHandler;
-        private readonly IMessageProducer _messageProducer;
+        private readonly IMessagePublisher _messagePublisher;
         private readonly IOrderRepository _orderRepository;
 
 
-        public OrderService(IMessageProducer messageProducer, IOrderRepository orderRepository)
+        public OrderService(IOrderRepository orderRepository, IMessagePublisher messagePublisher)
         {
-            _messageProducer = messageProducer;
+
             _orderRepository = orderRepository;
+            _messagePublisher = messagePublisher;
         }
 
         public async Task<Result<PagedItems<OrderDTO>>> GetAllAsync(int page, int pageQuantity)
@@ -78,8 +79,8 @@ namespace StorageApp.Orders.Application.Service
             var body = dto.ToEntity(userId, username);
             await _orderRepository.Create(body);
 
+            await _messagePublisher.SendMessage(body);
             await _orderRepository.CommitAsync();
-            await _messageProducer.SendMessage(body);
             return Result.SuccessWithMessage("Order Created");
         }
 

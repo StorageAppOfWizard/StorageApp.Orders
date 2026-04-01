@@ -12,16 +12,16 @@ namespace StorageApp.Orders.Infrastructure.Repository
 
         public async Task Create(Order order)
             => await _dbSet.AddAsync(order);
-        
+
         public async Task<IEnumerable<Order>> GetAll(Order order, CancellationToken cancellationToken)
             => await _dbSet.AsNoTracking().ToListAsync(cancellationToken);
-        
+
         public async Task<Order?> GetById(Guid id, CancellationToken cancellationToken = default)
-            => await _dbSet .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+            => await _dbSet.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
 
         public void Delete(Order order, CancellationToken cancellationToken = default)
-            =>_dbSet.Remove(order);
-        
+            => _dbSet.Remove(order);
+
         //public async Task<IEnumerable<Order>> GetOrdersByUserId(string userId, CancellationToken cancellationToken = default)
         //{
         //    return await _context.Orders
@@ -45,7 +45,7 @@ namespace StorageApp.Orders.Infrastructure.Repository
                 .Skip((page - 1) * pageQuantity)
                 .Take(pageQuantity)
                 .ToListAsync(cancellationToken);
-            
+
         }
 
         public async Task CommitAsync(CancellationToken cancellationToken = default)
@@ -53,10 +53,6 @@ namespace StorageApp.Orders.Infrastructure.Repository
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task<ProductSnap?> GetProductById(Guid id, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 

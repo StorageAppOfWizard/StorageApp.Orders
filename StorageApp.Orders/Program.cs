@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using RabbitMQ.Client;
 using StorageApp.Orders.Application;
@@ -15,27 +16,30 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
-// Registra MessageConnection como Singleton e inicializa ela
-builder.Services.AddScoped<IMessageConnection>(sp =>
-{
-    var config = sp.GetRequiredService<IConfiguration>();
-    var messageConnection = new MessageConnection();
-    messageConnection.ConnectionMessage(config);
-    messageConnection.InitializeAsync().GetAwaiter().GetResult(); // inicializa sync no startup
-    return messageConnection;
-});
-
-builder.Services.AddScoped<IMessageProducer, MessageProducer>();
-builder.Services.AddScoped<IMessageTopology, MessageTopology>();
-builder.Services.AddScoped<IOrderService, OrderService>();
-
-
 string connectionString = "User ID=root;Password=Lagavi30!;Host=localhost;Port=5432;Database=orders;Pooling=true;MinPoolSize=0;MaxPoolSize=100;Connection Lifetime=0;";
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddSwaggerGen();
 
 
+builder.Services.AddMassTransit(busConfig =>
+{
+    busConfig.SetKebabCaseEndpointNameFormatter();
+    busConfig.UsingRabbitMq((context, config) =>
+    {
+        config.ConfigureEndpoints(context);
+        config.Host
+        (
+            host: "localhost",
+            virtualHost: "/", h =>
+                {
+                    h.Username("guest");
+                    h.Password("guest");
+                }
+        );
+    });
+
+});
 
 var app = builder.Build();
 
