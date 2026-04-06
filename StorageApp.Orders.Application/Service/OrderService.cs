@@ -79,7 +79,8 @@ namespace StorageApp.Orders.Application.Service
             var body = dto.ToEntity(userId, username);
             await _orderRepository.Create(body);
 
-            await _messagePublisher.SendMessage(body);
+            var message = body.ToEntity();
+            await _messagePublisher.SendMessage(message);
             await _orderRepository.CommitAsync();
             return Result.SuccessWithMessage("Order Created");
         }

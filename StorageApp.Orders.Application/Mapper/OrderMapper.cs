@@ -53,5 +53,15 @@ namespace StorageApp.Orders.Application.Mapper
             order.ProductId = dto.ProductId;
             order.QuantityProduct = dto.Quantity;
         }
+
+        public static OrderMessage ToEntity(this Order order)
+        {
+            return new OrderMessage
+            {
+                Id = order.Id,
+                ProductId = order.ProductId,
+                QuantityProduct = order.QuantityProduct
+            };
+        }
     }
 }
