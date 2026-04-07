@@ -29,25 +29,26 @@ builder.Services.AddMassTransit(busConfig =>
 {
     busConfig.UsingRabbitMq((context, config) =>
     {
-        config.ConfigureEndpoints(context);
-        config.Host
-        (
-            host: "localhost",
-            virtualHost: "/", h =>
-                {
-                    h.Username("guest");
-                    h.Password("guest");
-                }
-        );
-        config.Publish<OrderMessage>(x =>
+        config.Host("localhost", "/", h =>
         {
-            x.ExchangeType = "fanout";
+            h.Username("guest");
+            h.Password("guest");
+        });
+
+        config.Message<OrderMessage>(m =>
+        {
+            m.SetEntityName("order-created");
 
         });
+
+        config.Publish<OrderMessage>(m =>
+        {
+            m.ExchangeType = ExchangeType.Fanout;
+        });
+
+        config.ConfigureEndpoints(context);
+        
     });
-
-    
-
 });
 
 var app = builder.Build();
