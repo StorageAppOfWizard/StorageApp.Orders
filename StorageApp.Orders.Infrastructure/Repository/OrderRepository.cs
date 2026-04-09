@@ -22,13 +22,13 @@ namespace StorageApp.Orders.Infrastructure.Repository
         public void Delete(Order order, CancellationToken cancellationToken = default)
             => _dbSet.Remove(order);
 
-        //public async Task<IEnumerable<Order>> GetOrdersByUserId(string userId, CancellationToken cancellationToken = default)
-        //{
-        //    return await _context.Orders
-        //        .Where(o => o.UserId == userId)
-        //        .AsNoTracking()
-        //        .ToListAsync(cancellationToken);
-        //}
+        public async Task<IEnumerable<Order>> GetOrdersByUserId(string userId, CancellationToken cancellationToken = default)
+        {
+            return await _context.Orders
+                .Where(o => o.UserId == userId)
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
+        }
 
         public async Task<IEnumerable<Order>> GetOrderWithIncludes(CancellationToken cancellationToken = default)
         {

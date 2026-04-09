@@ -4,7 +4,7 @@ namespace StorageApp.Orders.Domain.Contracts
 {
     public interface IOrderRepository
     {
-        //public Task<IEnumerable<Order>> GetOrdersByUserId(string userId, CancellationToken cancellationToken = default);
+        public Task<IEnumerable<Order>> GetOrdersByUserId(string userId, CancellationToken cancellationToken = default);
         public Task<IEnumerable<Order>> GetOrderWithIncludes(CancellationToken cancellationToken = default);
         public Task<IEnumerable<Order>> GetAll(Order order, CancellationToken cancellationToken);
         public Task<Order?> GetById(Guid id, CancellationToken cancellationToken = default);

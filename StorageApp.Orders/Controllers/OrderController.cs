@@ -9,7 +9,7 @@ namespace StorageApp.Orders.Controllers
 {
     [ApiController]
     [Route("order")]
-    public class OrderController : Controller
+    public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
 
@@ -35,7 +35,7 @@ namespace StorageApp.Orders.Controllers
         //    return result.ToActionResult();
         //}
 
-        
+        [Authorize]
         [HttpPost("create-order")]
         public async Task<IActionResult> Create([FromBody] CreateOrderDTO order)
         {
@@ -44,7 +44,7 @@ namespace StorageApp.Orders.Controllers
             return result.ToActionResult();
         }
 
-   
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Get(
             [FromQuery, DefaultValue(1)] int page,
@@ -55,18 +55,18 @@ namespace StorageApp.Orders.Controllers
 
         }
 
-        //[Authorize]
-        //[HttpGet("my-orders")]
-        //public async Task<IActionResult> GetByUser(
-        //    [FromQuery, DefaultValue(1)] int page,
-        //    [FromQuery, DefaultValue(20)] int pageQuantity)
-        //{
-        //    var result = await _orderService.GetOrdersByUserIdAsync(page, pageQuantity);
-        //    return result.ToActionResult();
+        [Authorize]
+        [HttpGet("my-orders")]
+        public async Task<IActionResult> GetByUser(
+            [FromQuery, DefaultValue(1)] int page,
+            [FromQuery, DefaultValue(20)] int pageQuantity)
+        {
+            var result = await _orderService.GetOrdersByUserIdAsync(page, pageQuantity);
+            return result.ToActionResult();
 
-        //}
+        }
 
-       
+
         [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {

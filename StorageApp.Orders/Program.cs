@@ -1,15 +1,11 @@
 using StorageApp.Orders.Web.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddControllers();
-
-builder.Services.AddOpenApi();
+builder.Services.AddWebConfiguration(builder.Configuration);
 builder.Services.AddApplicationConfiguration();
 builder.Services.AddInfrastructureConfiguration();
 builder.Services.AddMessageBrokerConfiguration();
 builder.Services.AddSwaggerConfiguration();
-
 
 
 
@@ -24,8 +20,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

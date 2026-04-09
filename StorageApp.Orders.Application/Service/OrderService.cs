@@ -12,6 +12,7 @@ namespace StorageApp.Orders.Application.Service
         private readonly IEnumerable<IOrderHandler> _orderHandler;
         private readonly IMessagePublisher _messagePublisher;
         private readonly IOrderRepository _orderRepository;
+        private readonly IUserContextAuth _userContextAuth;
 
 
         public OrderService(IOrderRepository orderRepository, IMessagePublisher messagePublisher)
@@ -42,18 +43,20 @@ namespace StorageApp.Orders.Application.Service
             return Result.Success(order.ToDTO());
         }
 
-        //public async Task<Result<List<OrderDTO>>> GetOrdersByUserIdAsync(int page, int pageQuantity)
-        //{
+        public async Task<Result<PagedItems<OrderDTO>>> GetOrdersByUserIdAsync(int page, int pageQuantity)
+        {
 
-        //    if (_userContextAuth.IsAuthenticated is false) return Result.Forbidden();
+            if (_userContextAuth.IsAuthenticated is false) return Result.Forbidden();
 
-        //    var orders = await _orderRepository.GetOrdersByUserId(page, pageQuantity, _userContextAuth.UserId);
+            var orders = await _orderRepository.GetOrdersByUserId(_userContextAuth.UserId);
 
-        //    if (orders is null || !orders.Any())
-        //        return Result.Success();
+            if (orders is null || !orders.Any())
+                return Result.Success();
+            var orderDto = orders.Select(o => o.ToDTO()).ToList();
+            var pagedDto = new PagedItems<OrderDTO>(orderDto, page, pageQuantity);
 
-        //    return Result.Success(orders.Select(o => o.ToDTO()).ToList());
-        //}
+            return Result.Success(pagedDto);
+        }
 
         public async Task<Result> CreateOrderAsync(CreateOrderDTO dto)
         {
@@ -65,14 +68,12 @@ namespace StorageApp.Orders.Application.Service
             //if (existingProduct.Quantity < dto.Quantity)
             //    return Result.Error("There is not sufficient quantity for this order");
 
-            //var userId = _userContextAuth.UserId;
-            //var username = _userContextAuth.UserName;
+            var userId = _userContextAuth.UserId;
+            Console.WriteLine(userId);
+            var username = _userContextAuth.UserName;
 
-            var userId = "teste";
-            var username = "testeee";
-
-            //if (userId is null)
-            //    return Result.Unauthorized("Sign in for create a order");
+            if (userId is null)
+                return Result.Unauthorized("Sign in for create a order");
             int fakequantity = 50;
 
             fakequantity -= dto.Quantity;
@@ -119,11 +120,10 @@ namespace StorageApp.Orders.Application.Service
         //    if (handler is null)
         //        return Result.Error($"There's not handler for status ${order.Status}");
 
-        //    var result = await handler.Handle(order, null);
+        //    var result = await handler.Handle(order);
 
         //    if (!result.IsSuccess) return Result.Error(result.Errors.FirstOrDefault());
 
-        //    _orderRepository.Update(order);
         //    await _orderRepository.CommitAsync();
 
         //    return Result.SuccessWithMessage("Order Approved");

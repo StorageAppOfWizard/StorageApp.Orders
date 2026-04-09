@@ -20,17 +20,21 @@ namespace StorageApp.Orders.Web.Configurations
                     BearerFormat = "JWT",
                 });
 
-
-                var securityRequirement = new OpenApiSecurityRequirement
-
+                c.AddSecurityRequirement(document =>
                 {
+                    OpenApiSecuritySchemeReference? schemeRef = new("Bearer");
+                    OpenApiSecurityRequirement? requirement = new()
+                    {
+                        [schemeRef] = []
+                    };
+                    return requirement;
+                });
 
-                    [new OpenApiSecuritySchemeReference("Bearer")] = []
 
-                };
+
+
             });
-
         }
-
     }
 }
+
