@@ -10,12 +10,13 @@ namespace StorageApp.Orders.Web.Configurations
     {
         public static void AddApplicationConfiguration(this IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+            
+            services.AddScoped<IUserContextAuth, UserContextAuth>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IMessagePublisher, MessagePublisher>();
 
-            services.AddHttpContextAccessor();
-            services.AddScoped<IUserContextAuth, UserContextAuth>();
         }
     }
 }

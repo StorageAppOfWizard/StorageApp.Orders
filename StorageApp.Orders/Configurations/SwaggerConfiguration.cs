@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi;
+using System.Reflection.Metadata;
 
 namespace StorageApp.Orders.Web.Configurations
 {
@@ -10,24 +11,19 @@ namespace StorageApp.Orders.Web.Configurations
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Order Microsservice", Version = "v1" });
 
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                c.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization Header - utilizado com Bearer Authentication",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
                     BearerFormat = "JWT",
                 });
 
-                c.AddSecurityRequirement(document =>
+                c.AddSecurityRequirement(document => new OpenApiSecurityRequirement
                 {
-                    OpenApiSecuritySchemeReference? schemeRef = new("Bearer");
-                    OpenApiSecurityRequirement? requirement = new()
-                    {
-                        [schemeRef] = []
-                    };
-                    return requirement;
+                    [new OpenApiSecuritySchemeReference("bearer", document)] = []
                 });
 
 

@@ -15,11 +15,12 @@ namespace StorageApp.Orders.Application.Service
         private readonly IUserContextAuth _userContextAuth;
 
 
-        public OrderService(IOrderRepository orderRepository, IMessagePublisher messagePublisher)
+        public OrderService(IOrderRepository orderRepository, IMessagePublisher messagePublisher, IUserContextAuth userContextAuth)
         {
 
             _orderRepository = orderRepository;
             _messagePublisher = messagePublisher;
+            _userContextAuth = userContextAuth;
         }
 
         public async Task<Result<PagedItems<OrderDTO>>> GetAllAsync(int page, int pageQuantity)
@@ -45,8 +46,9 @@ namespace StorageApp.Orders.Application.Service
 
         public async Task<Result<PagedItems<OrderDTO>>> GetOrdersByUserIdAsync(int page, int pageQuantity)
         {
+            var isAuthenticated = _userContextAuth.IsAuthenticated;
 
-            if (_userContextAuth.IsAuthenticated is false) return Result.Forbidden();
+            if (isAuthenticated is false) return Result.Forbidden();
 
             var orders = await _orderRepository.GetOrdersByUserId(_userContextAuth.UserId);
 
