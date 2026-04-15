@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StorageApp.Orders.Application.Contracts;
 using StorageApp.Orders.Application.DTO;
-using StorageApp.Orders.Web;
+using StorageApp.Orders.Web.Extensions;
 using System.ComponentModel;
 
 namespace StorageApp.Orders.Controllers

@@ -46,9 +46,6 @@ namespace StorageApp.Orders.Application.Service
 
         public async Task<Result<PagedItems<OrderDTO>>> GetOrdersByUserIdAsync(int page, int pageQuantity)
         {
-            var isAuthenticated = _userContextAuth.IsAuthenticated;
-
-            if (isAuthenticated is false) return Result.Forbidden();
 
             var orders = await _orderRepository.GetOrdersByUserId(_userContextAuth.UserId);
 
@@ -70,16 +67,10 @@ namespace StorageApp.Orders.Application.Service
             //if (existingProduct.Quantity < dto.Quantity)
             //    return Result.Error("There is not sufficient quantity for this order");
 
-            var userId = _userContextAuth.UserId;
-            Console.WriteLine(userId);
-            var username = _userContextAuth.UserName;
-
-            if (userId is null)
+            if (_userContextAuth.UserId is null)
                 return Result.Unauthorized("Sign in for create a order");
-            int fakequantity = 50;
 
-            fakequantity -= dto.Quantity;
-            var body = dto.ToEntity(userId, username);
+            var body = dto.ToEntity(_userContextAuth.UserId, _userContextAuth.UserName);
             await _orderRepository.Create(body);
 
             var message = body.ToEntity();

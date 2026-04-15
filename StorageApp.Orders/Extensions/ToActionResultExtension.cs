@@ -1,7 +1,7 @@
 ﻿using Ardalis.Result;
 using Microsoft.AspNetCore.Mvc;
 
-namespace StorageApp.Orders.Web
+namespace StorageApp.Orders.Web.Extensions
 {
     public static class ToActionResultExtension
     {

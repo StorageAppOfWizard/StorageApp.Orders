@@ -6,9 +6,9 @@
         public OrderStatus Status { get; private set; } = OrderStatus.Pending;
         public Guid ProductId { get; set; }
         public int QuantityProduct { get; set; }
-        public string UserId { get; set; }
-        public string UserName { get; set; }
-        public DateTime CreatedAt{ get; set; } = DateTime.UtcNow;
+        public string UserId { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
 
 
