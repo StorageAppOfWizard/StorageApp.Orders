@@ -27,6 +27,7 @@ namespace StorageApp.Orders.Web.Configurations
                     config.Publish<OrderMessage>(m =>
                     {
                         m.ExchangeType = ExchangeType.Fanout;
+                        
                     });
 
                     config.ConfigureEndpoints(context);
