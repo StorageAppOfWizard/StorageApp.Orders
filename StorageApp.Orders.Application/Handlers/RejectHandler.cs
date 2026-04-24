@@ -15,7 +15,6 @@ namespace StorageProject.Application.Handlers
             if (order.Status != OrderStatus.Pending)
                 return Result.Error("Just pending order can be rejected");
 
-            //await order.RestoreProductStock(product);
             order.UpdateStatus(OrderStatus.Reject);
 
             return Result.Success(order);

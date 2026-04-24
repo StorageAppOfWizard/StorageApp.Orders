@@ -1,5 +1,6 @@
 ﻿using StorageApp.Orders.Application.DTO;
 using StorageApp.Orders.Domain.Entity;
+using StorageApp.Orders.Domain.Entity.MessagesEntity.Order;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -54,9 +55,9 @@ namespace StorageApp.Orders.Application.Mapper
             order.QuantityProduct = dto.Quantity;
         }
 
-        public static OrderMessage ToEntity(this Order order)
+        public static OrderCreatedMessage ToCreatedMessage(this Order order)
         {
-            return new OrderMessage
+            return new OrderCreatedMessage
             {
                 Id = order.Id,
                 ProductId = order.ProductId,

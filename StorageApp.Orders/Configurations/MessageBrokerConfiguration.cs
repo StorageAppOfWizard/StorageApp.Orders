@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using RabbitMQ.Client;
-using StorageApp.Orders.Domain.Entity;
+using StorageApp.Orders.Domain.Entity.MessagesEntity.Order;
 
 namespace StorageApp.Orders.Web.Configurations
 {
@@ -12,19 +12,20 @@ namespace StorageApp.Orders.Web.Configurations
             {
                 busConfig.UsingRabbitMq((context, config) =>
                 {
+
                     config.Host("localhost", "/", h =>
                     {
                         h.Username("guest");
                         h.Password("guest");
                     });
 
-                    config.Message<OrderMessage>(m =>
+                    config.Message<OrderCreatedMessage>(m =>
                     {
                         m.SetEntityName("order-created");
 
                     });
 
-                    config.Publish<OrderMessage>(m =>
+                    config.Publish<OrderCreatedMessage>(m =>
                     {
                         m.ExchangeType = ExchangeType.Fanout;
                         
@@ -33,6 +34,8 @@ namespace StorageApp.Orders.Web.Configurations
                     config.ConfigureEndpoints(context);
 
                 });
+
+                busConfig.AddConsumers(typeof(Program).Assembly);
             });
         }
     }

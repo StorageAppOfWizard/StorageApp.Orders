@@ -3,7 +3,7 @@
     public class Order
     {
         public Guid Id { get; set; }
-        public OrderStatus Status { get; private set; } = OrderStatus.Pending;
+        public OrderStatus Status { get; private set; } = OrderStatus.Processing;
         public Guid ProductId { get; set; }
         public int QuantityProduct { get; set; }
         public string UserId { get; set; } = string.Empty;

@@ -60,20 +60,13 @@ namespace StorageApp.Orders.Application.Service
         public async Task<Result> CreateOrderAsync(CreateOrderDTO dto)
         {
 
-            //var existingProduct = await _orderRepository.GetProductById(dto.ProductId);
-            //if (existingProduct is null)
-            //    return Result.NotFound("Not Found Product, check if the product exist");
-
-            //if (existingProduct.Quantity < dto.Quantity)
-            //    return Result.Error("There is not sufficient quantity for this order");
-
             if (_userContextAuth.UserId is null)
                 return Result.Unauthorized("Sign in for create a order");
 
             var body = dto.ToEntity(_userContextAuth.UserId, _userContextAuth.UserName);
             await _orderRepository.Create(body);
 
-            var message = body.ToEntity();
+            var message = body.ToCreatedMessage();
             await _messagePublisher.SendMessage(message);
             await _orderRepository.CommitAsync();
             return Result.SuccessWithMessage("Order Created");
