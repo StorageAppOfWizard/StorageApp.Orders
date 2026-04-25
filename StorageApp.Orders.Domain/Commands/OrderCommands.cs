@@ -2,7 +2,7 @@
 
 namespace StorageApp.Orders.Domain.Commands
 {
-    public record SendOrderCreated(OrderCreatedMessage message);
+    //public record SendOrderCreated(OrderCreatedMessage message);
     public record SendOrderRemoved(OrderRemovedMessage message);
     public record SendOrderAccept(OrderAcceptedMessage message);
     public record SendOrderRejected(OrderRejectedMessage message);

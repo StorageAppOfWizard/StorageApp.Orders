@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using RabbitMQ.Client;
-using StorageApp.Orders.Domain.Entity.MessagesEntity.Order;
+using StorageApp.Shared;
+
 
 namespace StorageApp.Orders.Web.Configurations
 {
@@ -28,6 +29,7 @@ namespace StorageApp.Orders.Web.Configurations
                     config.Publish<OrderCreatedMessage>(m =>
                     {
                         m.ExchangeType = ExchangeType.Fanout;
+                        
                         
                     });
 

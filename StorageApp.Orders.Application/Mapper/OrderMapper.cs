@@ -1,6 +1,7 @@
 ﻿using StorageApp.Orders.Application.DTO;
 using StorageApp.Orders.Domain.Entity;
 using StorageApp.Orders.Domain.Entity.MessagesEntity.Order;
+using StorageApp.Shared;
 using System;
 using System.Collections.Generic;
 using System.Text;
