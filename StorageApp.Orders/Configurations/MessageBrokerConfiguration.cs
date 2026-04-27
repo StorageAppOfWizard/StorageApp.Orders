@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using RabbitMQ.Client;
+using StorageApp.Orders.Application.Handlers.ConsumersHandler;
 using StorageApp.Shared;
 
 
@@ -37,7 +38,8 @@ namespace StorageApp.Orders.Web.Configurations
 
                 });
 
-                busConfig.AddConsumers(typeof(Program).Assembly);
+                busConfig.AddConsumer<StockAcceptedMessageHandler>();
+                busConfig.AddConsumer<StockRejectedMessageHandler>();
             });
         }
     }

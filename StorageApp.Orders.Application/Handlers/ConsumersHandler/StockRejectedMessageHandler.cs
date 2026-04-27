@@ -7,7 +7,7 @@ using StorageApp.Orders.Domain.Entity.MessagesEntity.Product;
 
 namespace StorageApp.Orders.Application.Handlers.ConsumersHandler
 {
-    public class StockRejectedMessageHandler(ILogger logger, IOrderRepository orderRepository, IOrderHandler orderHandler) : IConsumer<StockRejectedMessage>
+    public class StockRejectedMessageHandler(ILogger<StockRejectedMessageHandler> logger, IOrderRepository orderRepository, IEnumerable<IOrderHandler> orderHandler) : IConsumer<StockRejectedMessage>
     {
         private readonly IOrderRepository _orderRepository = orderRepository;
         private readonly IEnumerable<IOrderHandler> _orderHandler;
