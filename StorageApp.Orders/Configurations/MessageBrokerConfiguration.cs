@@ -2,6 +2,7 @@
 using RabbitMQ.Client;
 using StorageApp.Orders.Application.Handlers.ConsumersHandler;
 using StorageApp.Shared;
+using StorageApp.Shared.Message.Order;
 
 
 namespace StorageApp.Orders.Web.Configurations
@@ -30,8 +31,7 @@ namespace StorageApp.Orders.Web.Configurations
                     config.Publish<OrderCreatedMessage>(m =>
                     {
                         m.ExchangeType = ExchangeType.Fanout;
-                        
-                        
+
                     });
 
                     config.ConfigureEndpoints(context);

@@ -3,8 +3,7 @@ using Microsoft.Extensions.Logging;
 using StorageApp.Orders.Application.Contracts;
 using StorageApp.Orders.Domain.Contracts;
 using StorageApp.Orders.Domain.Entity;
-using StorageApp.Orders.Domain.Entity.MessagesEntity.Product;
-using StorageApp.Shared;
+using StorageApp.Shared.Message.Storage;
 
 namespace StorageApp.Orders.Application.Handlers.ConsumersHandler
 {

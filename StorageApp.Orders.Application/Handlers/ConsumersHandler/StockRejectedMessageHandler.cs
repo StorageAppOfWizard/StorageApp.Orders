@@ -3,17 +3,17 @@ using Microsoft.Extensions.Logging;
 using StorageApp.Orders.Application.Contracts;
 using StorageApp.Orders.Domain.Contracts;
 using StorageApp.Orders.Domain.Entity;
-using StorageApp.Orders.Domain.Entity.MessagesEntity.Product;
+using StorageApp.Shared.Message.Storage;
 
 namespace StorageApp.Orders.Application.Handlers.ConsumersHandler
 {
-    public class StockRejectedMessageHandler(ILogger<StockRejectedMessageHandler> logger, IOrderRepository orderRepository, IEnumerable<IOrderHandler> orderHandler) : IConsumer<StockRejectedMessage>
+    public class StockRejectedMessageHandler(ILogger<StockRejectedMessageHandler> logger, IOrderRepository orderRepository, IEnumerable<IOrderHandler> orderHandler) : IConsumer<StorageRejectMessage>
     {
         private readonly IOrderRepository _orderRepository = orderRepository;
-        private readonly IEnumerable<IOrderHandler> _orderHandler;
+        private readonly IEnumerable<IOrderHandler> _orderHandler = orderHandler;
 
 
-        public async Task Consume(ConsumeContext<StockRejectedMessage> context)
+        public async Task Consume(ConsumeContext<StorageRejectMessage> context)
         {
             var order = await _orderRepository.GetById(context.Message.OrderId);
             if (context.Message.StockAvailable is false)

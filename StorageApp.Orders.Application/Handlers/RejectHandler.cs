@@ -12,7 +12,7 @@ namespace StorageProject.Application.Handlers
         public async Task<Result<Order>> Handle(Order order /*Product? product*/)
         {
 
-            if (order.Status != OrderStatus.Pending)
+            if (order.Status != OrderStatus.Processing)
                 return Result.Error("Just pending order can be rejected");
 
             order.UpdateStatus(OrderStatus.Reject);
